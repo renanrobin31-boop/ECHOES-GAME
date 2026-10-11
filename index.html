@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#07152e">
+<title>ECHOES: The Realm of Synergy</title>
+<style>
+:root{--cyan:#56e7ff;--blue:#167bff;--panel:rgba(5,18,43,.88);--gold:#ffd66b}
+*{box-sizing:border-box} body{margin:0;background:#061127;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
+button{font:inherit;color:white;border:1px solid #69e8ff;background:linear-gradient(135deg,#1266c8,#092c66);border-radius:13px;padding:12px 16px;font-weight:800;box-shadow:0 0 14px #20bfff30;cursor:pointer}
+button:active{transform:scale(.97)} button.secondary{background:#102543;border-color:#44698d}
+#game{position:relative;width:100vw;height:100dvh;min-height:480px;overflow:hidden;background:linear-gradient(#68c6f5 0%,#b5efff 48%,#73c8a0 49%,#237052 100%)}
+#sky{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 18%,#fff9 0 5%,transparent 22%),linear-gradient(#57b9f2,#d8f8ff 62%,#74cda2 63%,#245c48)}
+#sun{position:absolute;width:90px;height:90px;border-radius:50%;background:#fff3b0;box-shadow:0 0 65px #fff5a4;top:9%;right:13%}
+.cloud{position:absolute;width:150px;height:35px;border-radius:50px;background:#ffffffa8;filter:blur(1px)}.cloud:before,.cloud:after{content:"";position:absolute;background:inherit;border-radius:50%;width:65px;height:60px;top:-25px;left:25px}.cloud:after{width:75px;height:70px;left:70px;top:-34px}
+#mountains{position:absolute;bottom:27%;left:-5%;width:110%;height:38%;background:#4d9cbd;clip-path:polygon(0 100%,0 65%,10% 37%,17% 60%,28% 10%,40% 58%,53% 22%,66% 66%,78% 16%,88% 54%,100% 25%,100% 100%);opacity:.75}
+#farland{position:absolute;bottom:18%;height:28%;width:120%;left:-10%;background:#347d66;clip-path:polygon(0 50%,14% 12%,26% 38%,41% 0,54% 45%,70% 10%,83% 35%,100% 4%,100% 100%,0 100%)}
+#ground{position:absolute;bottom:-8%;left:-15%;width:130%;height:37%;background:linear-gradient(160deg,#4dbb72,#155b43 65%);border-radius:50% 50% 0 0}
+#path{position:absolute;bottom:-12%;left:32%;width:42%;height:42%;background:#c5ad75;clip-path:polygon(37% 0,63% 0,100% 100%,0 100%);opacity:.9}
+.floating{position:absolute;font-size:clamp(25px,5vw,54px);filter:drop-shadow(0 5px 4px #173c3c66);animation:float 4s ease-in-out infinite}.f1{left:8%;top:29%}.f2{right:8%;top:37%;animation-delay:1s}.f3{left:72%;top:21%;animation-delay:2s}
+@keyframes float{50%{transform:translateY(-13px)}}
+#topbar{position:absolute;z-index:4;top:12px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+#brand{font-weight:1000;letter-spacing:3px;color:#e8fbff;text-shadow:0 3px 0 #08447e,0 0 18px #00bfff;font-size:clamp(19px,4vw,34px)}#brand small{display:block;letter-spacing:1px;font-size:10px;text-align:center}
+#hud{position:absolute;z-index:4;left:12px;top:88px;background:var(--panel);border:1px solid #58dfff7a;border-radius:14px;padding:10px 13px;font-size:13px;line-height:1.7;min-width:145px}
+#scene{position:absolute;z-index:2;inset:0;display:flex;align-items:center;justify-content:center}
+#hero{position:absolute;bottom:16%;left:42%;font-size:clamp(58px,12vw,105px);filter:drop-shadow(0 8px 3px #0b2b2a88);transition:left .12s linear;user-select:none}
+#pet{position:absolute;bottom:15%;left:54%;font-size:clamp(46px,9vw,78px);filter:drop-shadow(0 7px 3px #0b2b2a88);animation:float 2.6s ease-in-out infinite}
+#hint{position:absolute;bottom:12%;left:50%;transform:translateX(-50%);z-index:3;color:white;text-shadow:0 2px 4px #123;font-size:12px;white-space:nowrap}
+#panel{position:absolute;z-index:8;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;background:#04102455}
+.card{width:min(540px,100%);max-height:92dvh;overflow:auto;background:linear-gradient(155deg,#0d2850f5,#061126f5);border:1px solid #54dfff;border-radius:22px;padding:22px;box-shadow:0 0 35px #00bfff35;text-align:center}
+.card h1{margin:0;color:#bff8ff;font-size:clamp(26px,6vw,42px);letter-spacing:2px;text-shadow:0 0 15px #00aaff}.sub{color:#c8e9ff;margin:3px 0 18px}.btns{display:grid;gap:10px;margin-top:15px}.btns button{width:100%;font-size:16px}
+.trainers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.trainer{padding:12px 7px;background:#102747;border:1px solid #31577d;border-radius:14px;cursor:pointer}.trainer.selected{border:2px solid var(--gold);background:#183a5b}.trainer .emoji{font-size:42px}.trainer b{display:block}.trainer small{color:#c3d9f1}
+#controls{position:absolute;z-index:5;bottom:16px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}
+#dpad{display:grid;grid-template-columns:48px 48px 48px;grid-template-rows:43px 43px 43px;gap:4px;pointer-events:auto}
+#dpad button{padding:0;border-radius:12px;background:#071a36c9;font-size:21px;touch-action:none}
+#up{grid-column:2}#left{grid-column:1;grid-row:2}#down{grid-column:2;grid-row:2}#right{grid-column:3;grid-row:2}
+#actions{display:flex;flex-direction:column;gap:8px;pointer-events:auto}#actions button{min-width:104px;padding:12px 10px;background:#071a36db;touch-action:manipulation}
+#toast{position:absolute;z-index:10;top:24%;left:50%;transform:translateX(-50%);background:#06152beF;border:1px solid var(--cyan);border-radius:12px;padding:12px 16px;max-width:88%;text-align:center;display:none}
+#battleArea{display:none;position:absolute;z-index:7;inset:0;background:linear-gradient(#172b55dd,#071127f5);padding:18px;align-items:center;justify-content:center}
+.battleCard{width:min(520px,100%);background:#07162cf5;border:1px solid #57dfff;border-radius:20px;padding:18px;text-align:center}.fighters{display:flex;justify-content:space-around;align-items:center;margin:10px 0;font-size:55px}.hp{height:10px;background:#293c55;border-radius:20px;overflow:hidden;margin:5px 0 12px}.hp span{display:block;height:100%;background:linear-gradient(90deg,#4cff9c,#b8ff62);width:100%}.battleBtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}.small{font-size:12px;color:#bad2e9}
+@media(min-width:760px){#hero{bottom:14%}#pet{bottom:13%}#hud{top:100px}#controls{bottom:20px}}
+</style>
+</head>
+<body>
+<div id="game">
+  <div id="sky"></div><div id="sun"></div>
+  <div class="cloud" style="top:18%;left:13%"></div><div class="cloud" style="top:27%;left:63%;transform:scale(.8)"></div>
+  <div id="mountains"></div><div id="farland"></div><div id="ground"></div><div id="path"></div>
+  <div class="floating f1">🏝️</div><div class="floating f2">🏰</div><div class="floating f3">✨</div>
+  <div id="topbar"><div id="brand">ECHOES<small>THE REALM OF SYNERGY</small></div><button class="secondary" onclick="openMenu()">Ⅱ Menu</button></div>
+  <div id="hud">🌟 <b>Explorer Level 1</b><br>🪙 Shards: <span id="shards">0</span><br>🐾 Team: <span id="teamName">Flareo</span></div>
+  <div id="scene"><div id="hero">🧑🏻‍🚀</div><div id="pet">🦊</div></div>
+  <div id="hint">Explore the meadow • Find Echoes • Tap Battle</div>
+  <div id="controls">
+    <div id="dpad"><button id="up" aria-label="Move up">▲</button><button id="left" aria-label="Move left">◀</button><button id="down" aria-label="Move down">▼</button><button id="right" aria-label="Move right">▶</button></div>
+    <div id="actions"><button onclick="explore()">🔎 Explore</button><button onclick="startBattle()">⚔️ Battle</button><button onclick="showTeam()">🐾 My Team</button></div>
+  </div>
+  <div id="toast"></div>
+  <div id="panel">
+    <div class="card" id="menuCard">
+      <h1>ECHOES</h1><div class="sub">The Realm of Synergy</div>
+      <p>Different creatures. One world. Infinite possibilities.</p>
+      <div class="btns"><button onclick="newGame()">▶ New Game</button><button class="secondary" onclick="continueGame()">Continue Adventure</button><button class="secondary" onclick="showCredits()">Credits</button></div>
+      <p class="small">A free, mobile-friendly original creature adventure prototype.</p>
+    </div>
+  </div>
+  <div id="battleArea"><div class="battleCard">
+    <h2 id="battleTitle">Wild Echo Appeared!</h2><div class="small">Choose a move to begin your battle.</div>
+    <div class="fighters"><div><div id="playerSprite">🦊</div><b id="playerLabel">Flareo</b><div class="hp"><span id="playerHp"></span></div><small id="playerHpText">HP 100/100</small></div><div style="font-size:25px">VS</div><div><div id="enemySprite">🪨</div><b id="enemyLabel">Mossbit</b><div class="hp"><span id="enemyHp"></span></div><small id="enemyHpText">HP 70/70</small></div></div>
+    <p id="battleMessage">Your Echo is ready!</p>
+    <div class="battleBtns"><button onclick="attack('Spark')">⚡ Spark</button><button onclick="attack('Tackle')">💥 Tackle</button><button class="secondary" onclick="tryBond()">💠 Try Bond</button><button class="secondary" onclick="leaveBattle()">🏃 Retreat</button></div>
+  </div></div>
+</div>
+<script>
+const trainers=[
+ {name:"Kai",emoji:"🧑🏻‍🚀",desc:"Curious explorer",pet:"🦊",echo:"Flareo"},
+ {name:"Mira",emoji:"👩🏽‍🚀",desc:"Nature guardian",pet:"🦋",echo:"Lunafly"},
+ {name:"Ren",emoji:"🧑🏾‍🎤",desc:"Brave challenger",pet:"🐲",echo:"Emberax"},
+ {name:"Sora",emoji:"👩🏻‍🎤",desc:"Sky wanderer",pet:"🐺",echo:"Frostfang"}
+];
+const wilds=[{name:"Mossbit",emoji:"🪨",hp:70},{name:"Bubbloon",emoji:"🫧",hp:65},{name:"Thornkit",emoji:"🐗",hp:80},{name:"Voltfin",emoji:"🐟",hp:75},{name:"Cloudlet",emoji:"☁️",hp:60}];
+let trainer=0,shards=0,steps=0,playerHP=100,enemyHP=70,enemyMax=70,currentWild=wilds[0],bondAttempts=0,started=false;
+const $=id=>document.getElementById(id);
+function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').style.display='none',2200)}
+function hidePanel(){$('panel').style.display='none'}
+function openMenu(){$('panel').style.display='flex';$('menuCard').innerHTML='<h1>PAUSED</h1><div class="sub">Your adventure is waiting.</div><div class="btns"><button onclick="hidePanel()">▶ Resume</button><button class="secondary" onclick="showTeam()">🐾 My Team</button><button class="secondary" onclick="showCredits()">Credits</button></div>'}
+function newGame(){
+ $('menuCard').innerHTML='<h1>CHOOSE YOUR TRAINER</h1><div class="sub">Every journey begins with a choice.</div><div class="trainers">'+trainers.map((t,i)=>`<div class="trainer ${i===trainer?'selected':''}" onclick="selectTrainer(${i})"><div class="emoji">${t.emoji}</div><b>${t.name}</b><small>${t.desc}</small></div>`).join('')+'</div><div class="btns"><button onclick="beginAdventure()">Start Adventure →</button><button class="secondary" onclick="mainMenu()">Back</button></div>';
+}
+function selectTrainer(i){trainer=i;newGame()}
+function beginAdventure(){started=true;shards=0;steps=0;playerHP=100;bondAttempts=0;updateWorld();hidePanel();toast('Welcome, '+trainers[trainer].name+'! Your adventure begins.')}
+function mainMenu(){$('menuCard').innerHTML='<h1>ECHOES</h1><div class="sub">The Realm of Synergy</div><p>Different creatures. One world. Infinite possibilities.</p><div class="btns"><button onclick="newGame()">▶ New Game</button><button class="secondary" onclick="continueGame()">Continue Adventure</button><button class="secondary" onclick="showCredits()">Credits</button></div><p class="small">A free, mobile-friendly original creature adventure prototype.</p>'}
+function continueGame(){if(!started){newGame();return}hidePanel();toast('Welcome back, explorer!')}
+function updateWorld(){$('hero').textContent=trainers[trainer].emoji;$('pet').textContent=trainers[trainer].pet;$('teamName').textContent=trainers[trainer].echo;$('shards').textContent=shards}
+function showCredits(){$('menuCard').innerHTML='<h1>ABOUT ECHOES</h1><div class="sub">The Realm of Synergy</div><p>An original creature adventure made for this prototype. Explore, build bonds, and battle wild Echoes.</p><p class="small">Version 1.0 • Made for curious explorers.</p><div class="btns"><button onclick="mainMenu()">Back</button></div>'}
+function showTeam(){ $('panel').style.display='flex';$('menuCard').innerHTML='<h1>YOUR TEAM</h1><div class="sub">Your partner Echo</div><div style="font-size:68px">'+trainers[trainer].pet+'</div><h2>'+trainers[trainer].echo+'</h2><p>Bond level: '+(1+Math.floor(shards/3))+'<br>Role: Adventure companion</p><div class="btns"><button onclick="hidePanel()">Back to Adventure</button></div>'}
+function move(dx,dy){if($('panel').style.display!=='none'||$('battleArea').style.display==='flex')return;let hero=$('hero'),pet=$('pet');let x=parseFloat(hero.style.left||42),y=parseFloat(hero.style.bottom||16);x=Math.max(4,Math.min(82,x+dx*2.5));y=Math.max(7,Math.min(37,y+dy*1.5));hero.style.left=x+'%';hero.style.bottom=y+'%';pet.style.left=Math.max(5,Math.min(90,x+12))+'%';pet.style.bottom=(y-1)+'%';steps++;if(steps%5===0){shards++;updateWorld();toast('You found a Synergy Shard! ✨')}if(steps%8===0)toast('You hear a wild Echo nearby…')}
+[['up',0,1],['down',0,-1],['left',-1,0],['right',1,0]].forEach(([id,dx,dy])=>{let b=$(id);b.addEventListener('pointerdown',e=>{e.preventDefault();move(dx,dy)});b.addEventListener('click',()=>move(dx,dy))});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowUp'||e.key==='w')move(0,1);if(e.key==='ArrowDown'||e.key==='s')move(0,-1);if(e.key==='ArrowLeft'||e.key==='a')move(-1,0);if(e.key==='ArrowRight'||e.key==='d')move(1,0)});
+function explore(){if(!started){toast('Tap New Game to begin your journey!');$('panel').style.display='flex';return}let found=Math.random();if(found<.45){shards+=2;updateWorld();toast('✨ You discovered 2 Synergy Shards!')}else{toast('🌿 You explored the meadow. Something rustles nearby…')}}
+function startBattle(){if(!started){$('panel').style.display='flex';newGame();return}currentWild=wilds[Math.floor(Math.random()*wilds.length)];enemyMax=currentWild.hp;enemyHP=enemyMax;playerHP=100;bondAttempts=0;$('battleTitle').textContent='A wild '+currentWild.name+' appeared!';$('playerSprite').textContent=trainers[trainer].pet;$('playerLabel').textContent=trainers[trainer].echo;$('enemySprite').textContent=currentWild.emoji;$('enemyLabel').textContent=currentWild.name;$('battleMessage').textContent='Your Echo is ready! Choose a move.';$('battleArea').style.display='flex';paintHP()}
+function paintHP(){$('playerHp').style.width=Math.max(0,playerHP)+'%';$('enemyHp').style.width=Math.max(0,enemyHP/enemyMax*100)+'%';$('playerHpText').textContent='HP '+playerHP+'/100';$('enemyHpText').textContent='HP '+enemyHP+'/'+enemyMax}
+function attack(moveName){if($('battleArea').style.display!=='flex')return;let dmg=moveName==='Spark'?24:17;enemyHP=Math.max(0,enemyHP-dmg);if(enemyHP<=0){paintHP();$('battleMessage').textContent=currentWild.name+' is ready to bond!';shards+=3;updateWorld();$('battleTitle').textContent='Victory! ✨';toast('Victory! +3 Synergy Shards');return}let hit=7+Math.floor(Math.random()*12);playerHP=Math.max(0,playerHP-hit);paintHP();$('battleMessage').textContent=moveName+' dealt '+dmg+' damage! Wild Echo answered for '+hit+'.';if(playerHP<=0){$('battleMessage').textContent='Your Echo needs a rest. The battle ends in a draw.';setTimeout(leaveBattle,1100)}}
+function tryBond(){if(enemyHP<=0){$('battleMessage').textContent='Bond formed! '+currentWild.name+' joins your collection (prototype)!';$('teamName').textContent=trainers[trainer].echo+' + '+currentWild.name;shards+=1;updateWorld();return}bondAttempts++;if(enemyHP<=enemyMax*.35&&Math.random()<.65){$('battleTitle').textContent='Bond formed! 💠';$('battleMessage').textContent=currentWild.name+' trusts you and joins your collection!';$('teamName').textContent=currentWild.name;shards+=2;updateWorld()}else{$('battleMessage').textContent='The Echo is not ready yet. Weaken it a little more!';let hit=6;playerHP=Math.max(0,playerHP-hit);paintHP()}}
+function leaveBattle(){$('battleArea').style.display='none';if(playerHP<=0)playerHP=100}
+updateWorld();
+</script>
+</body>
+</html>
